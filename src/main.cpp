@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
     qt5stuff w;
     //w.show();
 
-    QFile dataFile("Test.json");
+    QFile dataFile("res/Test.json");
     dataFile.open(QIODevice::ReadOnly);
     QByteArray json = dataFile.readAll();
     dataFile.close();
@@ -22,5 +22,6 @@ int main(int argc, char *argv[])
     	qDebug() << key << item.value(key);
     }
 
+    return 0;
     return a.exec();
 }
