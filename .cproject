@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?fileVersion 4.0.0?>
+
+<cproject storage_type_id="org.eclipse.cdt.core.XmlProjectDescriptionStorage">
+	<storageModule moduleId="org.eclipse.cdt.core.settings">
+		<cconfiguration id="org.eclipse.cdt.core.default.config.2058678225">
+			<storageModule buildSystemId="org.eclipse.cdt.core.defaultConfigDataProvider" id="org.eclipse.cdt.core.default.config.2058678225" moduleId="org.eclipse.cdt.core.settings" name="Configuration">
+				<externalSettings/>
+				<extensions>
+					<extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+		</cconfiguration>
+	</storageModule>
+	<storageModule moduleId="scannerConfiguration">
+		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile"/>
+	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets">
+		<buildTargets>
+			<target name="Qt Release Build" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+				<buildCommand>make</buildCommand>
+				<buildArguments/>
+				<buildTarget>release</buildTarget>
+				<stopOnError>false</stopOnError>
+				<useDefaultCommand>false</useDefaultCommand>
+				<runAllBuilders>true</runAllBuilders>
+			</target>
+			<target name="Qt Debug Build" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+				<buildCommand>make</buildCommand>
+				<buildArguments/>
+				<buildTarget>debug</buildTarget>
+				<stopOnError>false</stopOnError>
+				<useDefaultCommand>false</useDefaultCommand>
+				<runAllBuilders>true</runAllBuilders>
+			</target>
+		</buildTargets>
+	</storageModule>
+	<storageModule moduleId="refreshScope"/>
+	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
+	<storageModule moduleId="org.eclipse.cdt.core.pathentry">
+		<pathentry base-path="/home/george/Software/qt5/qtbase/include" include="" kind="inc" path="" system="true"/>
+		<pathentry base-path="/home/george/Software/qt5/qtbase/include" include="QtDBus" kind="inc" path="" system="true"/>
+		<pathentry base-path="/home/george/Software/qt5/qtbase/include" include="QtGui" kind="inc" path="" system="true"/>
+		<pathentry base-path="/home/george/Software/qt5/qtbase/include" include="QtCore" kind="inc" path="" system="true"/>
+		<pathentry base-path="/home/george/Software/qt5/qtbase/include" include="QtOpenGL" kind="inc" path="" system="true"/>
+		<pathentry base-path="/home/george/Software/qt5/qtbase/include" include="QtPlatformSupport" kind="inc" path="" system="true"/>
+		<pathentry base-path="/home/george/Software/qt5/qtbase/include" include="QtSql" kind="inc" path="" system="true"/>
+		<pathentry base-path="/home/george/Software/qt5/qtbase/include" include="QtPrintSupport" kind="inc" path="" system="true"/>
+		<pathentry base-path="/home/george/Software/qt5/qtbase/include" include="QtWidgets" kind="inc" path="" system="true"/>
+		<pathentry base-path="/home/george/Software/qt5/qtbase/include" include="QtConcurrent" kind="inc" path="" system="true"/>
+		<pathentry base-path="/home/george/Software/qt5/qtbase/include" include="QtNetwork" kind="inc" path="" system="true"/>
+		<pathentry base-path="/home/george/Software/qt5/qtbase/include" include="QtTest" kind="inc" path="" system="true"/>
+		<pathentry base-path="/home/george/Software/qt5/qtbase/include" include="QtXml" kind="inc" path="" system="true"/>
+	</storageModule>
+</cproject>

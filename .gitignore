@@ -1,0 +1,4 @@
+debug
+release
+qt5stuff
+Makefile Makefile.Debug Makefile.Release
