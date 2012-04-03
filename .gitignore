@@ -1,7 +1,7 @@
 debug
 release
-qt5stuff
+FbSs
 Makefile
 Makefile.Debug
 Makefile.Release
-ui_qt5stuff.h
+ui_FbSs.h

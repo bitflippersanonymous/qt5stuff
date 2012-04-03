@@ -1,4 +1,4 @@
-#include "qt5stuff.h"
+#include "FbSs.h"
 
 #include <QtGui>
 #include <QApplication>
@@ -8,9 +8,10 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    qt5stuff w;
-    //w.show();
+    FbSs w;
+    w.show();
 
+#if 0
     QFile dataFile("res/Test.json");
     dataFile.open(QIODevice::ReadOnly);
     QByteArray json = dataFile.readAll();
@@ -21,7 +22,10 @@ int main(int argc, char *argv[])
     foreach ( const QString &key, item.keys() ) {
     	qDebug() << key << item.value(key);
     }
+#endif
 
-    return 0;
+    NetworkReader nr("https://graph.facebook.com/99394368305");
+    nr.makeRequest();
+
     return a.exec();
 }
