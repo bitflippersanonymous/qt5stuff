@@ -41,11 +41,6 @@ void NetworkReader::finishedSlot(QNetworkReply* reply) {
   QNetworkReply::NetworkError error = reply->error();
   if (error != QNetworkReply::NoError) {
     // handle errors here
-  } else {
-	  QByteArray bytes = d_reply->readAll();  // bytes
-	  qDebug() << bytes;
-	  //QImageReader imageReader(reply);
-	  //QImage pic = imageReader.read();
   }
   emit finishedRequest();
 }

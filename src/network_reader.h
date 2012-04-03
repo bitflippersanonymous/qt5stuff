@@ -12,6 +12,8 @@
 #include <QUrl>
 #include <QNetworkRequest>
 #include <QNetworkReply>
+#include <QImage>
+#include <QImageReader>
 
 class NetworkReader : public QObject
 {
@@ -28,6 +30,9 @@ public:
 	NetworkReader(const QString &url);
 	~NetworkReader();
 	void makeRequest();
+	QByteArray getBytes() { return d_reply->readAll(); }
+	QImage getImage() { return QImageReader(d_reply).read(); }
+	QJsonObject getJson() { return QJsonDocument::fromJson(getBytes()).object(); }
 
 signals:
 	void finishedRequest();
