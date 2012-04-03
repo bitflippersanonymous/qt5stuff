@@ -1,4 +1,7 @@
 debug
 release
 qt5stuff
-Makefile Makefile.Debug Makefile.Release
+Makefile
+Makefile.Debug
+Makefile.Release
+ui_qt5stuff.h
