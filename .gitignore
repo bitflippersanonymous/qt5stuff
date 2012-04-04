@@ -5,3 +5,4 @@ Makefile
 Makefile.Debug
 Makefile.Release
 ui_FbSs.h
+res/access_token
