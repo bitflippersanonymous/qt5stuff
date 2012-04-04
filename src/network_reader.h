@@ -12,30 +12,28 @@
 #include <QUrl>
 #include <QNetworkRequest>
 #include <QNetworkReply>
-#include <QImage>
-#include <QImageReader>
 
 class NetworkReader : public QObject
 {
     Q_OBJECT
 	QNetworkAccessManager 	*d_manager;
-    QUrl					d_url;
-    QNetworkRequest			*d_request;
-    QNetworkReply 			*d_reply;
 
 private:
     void encodeQueryItems(QUrl& url);
 
 public:
-	NetworkReader(const QString &url);
+	NetworkReader();
 	~NetworkReader();
-	void makeRequest();
+	void makeRequest(const QUrl &url);
+
+	/*
+	QIODevice *getReply() { return d_reply; }
 	QByteArray getBytes() { return d_reply->readAll(); }
 	QImage getImage() { return QImageReader(d_reply).read(); }
-	QJsonObject getJson() { return QJsonDocument::fromJson(getBytes()).object(); }
+	*/
 
 signals:
-	void finishedRequest();
+	void finishedRequest(QNetworkReply *device);
 
 private slots:
 	virtual void finishedSlot(QNetworkReply* reply);

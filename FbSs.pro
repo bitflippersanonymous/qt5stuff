@@ -4,10 +4,13 @@ QT += core \
     gui \
     network \
     widgets
-HEADERS += src/FbSs.h \
+HEADERS += src/FbObject.h \
+    src/FbSs.h \
     src/network_reader.h
-SOURCES += src/FbSs.cpp \
-    src/network_reader.cpp \
-    src/main.cpp
-FORMS += FbSs.ui
+SOURCES += src/FbObject.cpp \
+    src/FbSs.cpp \
+    src/main.cpp \
+    src/network_reader.cpp
+FORMS += FbSs.ui \
+    FbSs.ui
 RESOURCES += 

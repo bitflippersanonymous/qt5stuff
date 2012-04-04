@@ -9,12 +9,19 @@ class FbSs : public QMainWindow
 {
     Q_OBJECT
 
+    Ui::FbSs ui;
+    QString d_access_token;
+	NetworkReader d_nr;
+
 public:
     FbSs(QWidget *parent = 0);
     ~FbSs();
 
-private:
-    Ui::FbSs ui;
+    void populateFriends();
+
+private slots:
+	void processItem(QNetworkReply *reply);
+
 };
 
 

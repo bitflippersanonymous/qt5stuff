@@ -2,8 +2,6 @@
 
 #include <QtGui>
 #include <QApplication>
-#include <QJsonDocument>
-#include <QDebug>
 
 int main(int argc, char *argv[])
 {
@@ -24,8 +22,7 @@ int main(int argc, char *argv[])
     }
 #endif
 
-    NetworkReader nr("https://graph.facebook.com/99394368305");
-    nr.makeRequest();
+
 
     return a.exec();
 }

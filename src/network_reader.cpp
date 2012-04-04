@@ -8,32 +8,27 @@
 #include "network_reader.h"
 #include <QDebug>
 
-NetworkReader::NetworkReader(const QString &url)
-	: d_manager(new QNetworkAccessManager(this)), d_request(0), d_reply(0) {
+NetworkReader::NetworkReader()
+	: d_manager(new QNetworkAccessManager(this)) {
 	QObject::connect(d_manager, SIGNAL(finished(QNetworkReply*)),
 			this, SLOT(finishedSlot(QNetworkReply*)));
-	d_url.setUrl(url, QUrl::StrictMode);
-	encodeQueryItems(d_url);
 }
 
 NetworkReader::~NetworkReader() {
-	delete d_reply;
 	delete d_manager;
 }
 
-void NetworkReader::makeRequest()
+void NetworkReader::makeRequest(const QUrl &url)
 {
 	QNetworkRequest request;
-    request.setUrl(d_url);
+    request.setUrl(url);
     request.setRawHeader("User-Agent", "YouTwitFace 1.0");
-	d_reply = d_manager->get(request);
-    connect(d_reply, SIGNAL(readyRead()), this, SLOT(downloadReadyRead()));
-    connect(d_reply, SIGNAL(error(QNetworkReply::NetworkError)),
+    QNetworkReply *reply = d_manager->get(request);
+    connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
             this, SLOT(slotError(QNetworkReply::NetworkError)));
 }
 
 void NetworkReader::finishedSlot(QNetworkReply* reply) {
-  Q_ASSERT(d_reply == reply);
   QVariant statusCodeV = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
   QVariant redirectionTargetUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute);
   // see CS001432 on how to handle this
@@ -42,7 +37,7 @@ void NetworkReader::finishedSlot(QNetworkReply* reply) {
   if (error != QNetworkReply::NoError) {
     // handle errors here
   }
-  emit finishedRequest();
+  emit finishedRequest(reply);
 }
 
 void NetworkReader::slotError(QNetworkReply::NetworkError error)  {
