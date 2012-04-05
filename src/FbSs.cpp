@@ -15,9 +15,9 @@ FbSs::FbSs(QWidget *parent)
 
     QFile dataFile("res/access_token");
     dataFile.open(QIODevice::ReadOnly);
+    Q_ASSERT(dataFile.size());
     d_access_token = dataFile.readLine().trimmed();
     dataFile.close();
-    qDebug() << d_access_token;
     populateFriends();
 }
 
