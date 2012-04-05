@@ -10,7 +10,7 @@
 
 NetworkReader::NetworkReader()
 	: d_manager(new QNetworkAccessManager(this)) {
-	QObject::connect(d_manager, SIGNAL(finished(QNetworkReply*)),
+	connect(d_manager, SIGNAL(finished(QNetworkReply*)),
 			this, SLOT(finishedSlot(QNetworkReply*)));
 }
 

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>301</width>
+    <height>135</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,10 +19,16 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>301</width>
      <height>25</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuFbSs">
+    <property name="title">
+     <string>FbSs</string>
+    </property>
+   </widget>
+   <addaction name="menuFbSs"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
