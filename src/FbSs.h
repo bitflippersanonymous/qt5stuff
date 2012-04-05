@@ -20,10 +20,10 @@ public:
     FbSs(QWidget *parent = 0);
     ~FbSs();
 
-    void populateFriends();
+    void getFriends();
 
 private slots:
-	void processItem(QNetworkReply *reply);
+	void gotFriends(QNetworkReply *reply);
     void handleState();
 
 };

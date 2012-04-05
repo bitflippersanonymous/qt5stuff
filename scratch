@@ -1,0 +1,19 @@
+Init
+ 
+ 
+getFriends
+me/friends
+
+
+getFriendPhotos
+foreach friend friends {
+	getPhotos(friend) 936631/photos?fields=id,source  
+}
+
+getPhoto
+foreach photo photos {
+	getPhoto(photo) $photo.source returns image
+}
+ 
+ 
+ 
