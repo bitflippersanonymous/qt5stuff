@@ -3,13 +3,15 @@
 #include <QFile>
 #include <QJsonObject>
 #include <QJsonDocument>
+#include <QStateMachine>
+#include <QPushButton>
 #include <QDebug>
 
 const QString fburl = "https://graph.facebook.com/";
 const char *access_token = "access_token";
 
 FbSs::FbSs(QWidget *parent)
-    : QMainWindow(parent)
+    : QMainWindow(parent), d_b(new QPushButton(this))
 {
 	ui.setupUi(this);
 
@@ -19,11 +21,30 @@ FbSs::FbSs(QWidget *parent)
     dataFile.close();
     qDebug() << d_access_token;
     populateFriends();
+
+
+    QStateMachine machine;
+    QState *s1 = new QState();
+    QState *s2 = new QState();
+
+    s1->addTransition(d_b, SIGNAL(clicked()), s2);
+    s2->addTransition(d_b, SIGNAL(clicked()), s1);
+    connect(s2, SIGNAL(entered()), this, SLOT(handleState));
+    machine.addState(s1);
+    machine.addState(s2);
+    machine.setInitialState(s1);
+    machine.start();
+
+
 }
 
 FbSs::~FbSs()
 {
+	delete d_b;
+}
 
+void FbSs::handleState() {
+	qDebug() << "Something Happened";
 }
 
 void FbSs::populateFriends() {
