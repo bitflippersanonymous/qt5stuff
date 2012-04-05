@@ -3,10 +3,10 @@
 
 #include "ui_FbSs.h"
 #include "network_reader.h"
-#include <QtWidgets/QMainWindow>
+#include <QtWidgets>
 #include <QPushButton>
 
-class FbSs : public QMainWindow
+class FbSs : public QWidget
 {
     Q_OBJECT
 
@@ -14,16 +14,17 @@ class FbSs : public QMainWindow
     QString d_access_token;
 	NetworkReader d_nr;
 	QPushButton 	*d_b;
+    QStateMachine machine;
 
 public:
     FbSs(QWidget *parent = 0);
     ~FbSs();
 
-    void handleState();
     void populateFriends();
 
 private slots:
 	void processItem(QNetworkReply *reply);
+    void handleState();
 
 };
 

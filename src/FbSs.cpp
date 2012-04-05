@@ -11,9 +11,9 @@ const QString fburl = "https://graph.facebook.com/";
 const char *access_token = "access_token";
 
 FbSs::FbSs(QWidget *parent)
-    : QMainWindow(parent), d_b(new QPushButton(this))
+    : QWidget(parent), d_b(new QPushButton(this))
 {
-	ui.setupUi(this);
+	//ui.setupUi(this);
 
     QFile dataFile("res/access_token");
     dataFile.open(QIODevice::ReadOnly);
@@ -23,13 +23,12 @@ FbSs::FbSs(QWidget *parent)
     populateFriends();
 
 
-    QStateMachine machine;
     QState *s1 = new QState();
     QState *s2 = new QState();
 
     s1->addTransition(d_b, SIGNAL(clicked()), s2);
     s2->addTransition(d_b, SIGNAL(clicked()), s1);
-    connect(s2, SIGNAL(entered()), this, SLOT(handleState));
+    connect(s2, SIGNAL(entered()), this, SLOT(handleState()));
     machine.addState(s1);
     machine.addState(s2);
     machine.setInitialState(s1);
