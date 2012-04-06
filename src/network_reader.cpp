@@ -7,6 +7,7 @@
 
 #include "network_reader.h"
 #include <QDebug>
+#include <QJsonDocument>
 
 NetworkReader::NetworkReader()
 	: d_manager(new QNetworkAccessManager(this)) {
@@ -35,13 +36,14 @@ void NetworkReader::finishedSlot(QNetworkReply* reply) {
 
   QNetworkReply::NetworkError error = reply->error();
   if (error != QNetworkReply::NoError) {
-    // handle errors here
+	  qDebug() << "Error: " << error;
   }
+  reply->deleteLater();
   emit finishedRequest(reply);
 }
 
 void NetworkReader::slotError(QNetworkReply::NetworkError error)  {
-	  qDebug() << "Error";
+	  qDebug() << "Error: " << error;
 }
 
 void NetworkReader::encodeQueryItems(QUrl& url) {

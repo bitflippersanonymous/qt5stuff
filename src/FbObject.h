@@ -10,12 +10,16 @@
 
 #include <QObject>
 #include <QJsonObject>
+#include <QHash>
+#include <QSet>
 
 class FbObject : public QObject {
     Q_OBJECT
 
 public:
-    typedef long long FbId;
+    typedef unsigned long long FbId;
+    typedef QHash<const FbObject::FbId, FbObject *> FbHash;
+    typedef QSet<const FbObject::FbId> FbSet;
 
 private:
 	QJsonObject d_json;

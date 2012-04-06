@@ -3,8 +3,10 @@
 
 #include "ui_FbSs.h"
 #include "network_reader.h"
+#include "FbObject.h"
 #include <QtWidgets>
 #include <QPushButton>
+#include <QHash>
 
 class FbSs : public QWidget
 {
@@ -15,15 +17,27 @@ class FbSs : public QWidget
 	NetworkReader d_nr;
 	QPushButton 	*d_b;
     QStateMachine machine;
+    FbObject::FbSet d_photos;
+
+private:
+    bool fileExists(const QString &id);
+    QJsonObject makeJson(QNetworkReply *reply);
 
 public:
     FbSs(QWidget *parent = 0);
     ~FbSs();
 
-    void getFriends();
+    void query(QUrl &url, const char *slot);
+    void getFriends(const QString &id);
+    void getPhotos(const QString &id);
+    void getPhoto(const QString &id);
+
 
 private slots:
-	void gotFriends(QNetworkReply *reply);
+	void gotFriends(QNetworkReply* reply);
+	void gotPhotos(QNetworkReply* reply);
+	void gotPhoto(QNetworkReply* reply);
+	void savePhoto(QNetworkReply* reply);
     void handleState();
 
 };
