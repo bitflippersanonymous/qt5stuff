@@ -14,12 +14,18 @@
 #include <QStateMachine>
 #include <QPushButton>
 #include <QDebug>
+#include <QtCore>
+#include <QtConcurrentRun>
+#include <QFuture>
+#include <QFutureWatcher>
+#include <QNetworkReply>
+
 
 const QString fburl = "https://graph.facebook.com/";
 const char *access_token = "access_token";
 
 FbSs::FbSs(QWidget *parent)
-    : QWidget(parent), d_b(new QPushButton(this))
+    : QWidget(parent), d_nr(0), d_b(new QPushButton(this))
 {
 	resize(200, 200);
     QFile dataFile("res/access_token");
@@ -28,26 +34,17 @@ FbSs::FbSs(QWidget *parent)
     d_access_token = dataFile.readLine().trimmed();
     dataFile.close();
 
-    QState *s1 = new QState();
-    QState *s2 = new QState();
-    s1->addTransition(d_b, SIGNAL(clicked()), s2);
-    s2->addTransition(d_b, SIGNAL(clicked()), s1);
-    connect(s2, SIGNAL(entered()), this, SLOT(handleState()));
-    machine.addState(s1);
-    machine.addState(s2);
-    machine.setInitialState(s1);
-    machine.start();
-
-	getFriends("me");
-
+	QFuture<void> future = QtConcurrent::run(this, &FbSs::photoThread);
 }
 
 FbSs::~FbSs()
 {
 	delete d_b;
+	delete d_nr;
 }
 
-void FbSs::handleState() {
+void FbSs::photoThread() {
+	d_nr = new NetworkReader();
 	getFriends("me");
 }
 
@@ -55,66 +52,68 @@ QJsonObject FbSs::makeJson(QNetworkReply *reply) {
 	return QJsonDocument::fromJson(reply->readAll()).object();
 }
 
-void FbSs::query(QUrl &url, const char *slot) {
+QNetworkReply* FbSs::query(QUrl &url) {
 	url.addQueryItem(access_token, d_access_token);
-	d_nr.makeRequest(url);
-    connect(&d_nr, SIGNAL(finishedRequest(QNetworkReply *)), this, slot);
+	return d_nr->makeRequest(url);
 }
 
-void FbSs::getFriends(const QString &id) {
+bool FbSs::getFriends(const QString &id) {
 	QUrl url;
 	url.setUrl(fburl + id + "/friends", QUrl::StrictMode);
 	url.addQueryItem("fields", "id");
-	query(url, SLOT(gotFriends(QNetworkReply *)));
-}
-
-void FbSs::gotFriends(QNetworkReply* reply) {
+	QNetworkReply *reply;
+	if ( !(reply = query(url)) )
+		return false;
 	foreach ( const QJsonValue &value, makeJson(reply).value("data").toArray()) {
 		getPhotos(value.toObject().value("id").toString());
 		break;
 	}
+	return true;
 }
 
-void FbSs::getPhotos(const QString &id) {
+bool FbSs::getPhotos(const QString &id) {
 	QUrl url;
 	url.setUrl(fburl + id + "/photos", QUrl::StrictMode);
 	url.addQueryItem("fields", "id");
-	query(url, SLOT(gotPhotos(QNetworkReply *)));
-}
-
-void FbSs::gotPhotos(QNetworkReply* reply) {
+	QNetworkReply *reply;
+	if ( !(reply = query(url)) )
+		return false;
 	foreach ( const QJsonValue &value, makeJson(reply).value("data").toArray()) {
 		const QString &key = value.toObject().value("id").toString();
 		if ( !fileExists(key) )
-			d_photos.insert(key.toULongLong());
+			getPhoto(key);
 	}
+	return true;
 }
 
-void FbSs::getPhoto(const QString &id) {
+bool FbSs::getPhoto(const QString &id) {
 	QUrl url;
 	url.setUrl(fburl + id, QUrl::StrictMode);
 	url.addQueryItem("fields", "id,picture");
-	query(url, SLOT(gotPhoto(QNetworkReply *)));
+	QNetworkReply *reply;
+	if ( !(reply = query(url)) )
+		return false;
+	QJsonObject json(makeJson(reply));
+	return savePhoto(json.value("picture").toString(), json.value("id").toString());
 }
 
-void FbSs::gotPhoto(QNetworkReply* reply) {
-	QUrl url(makeJson(reply).value("picture").toString());
-	query(url, SLOT(savePhoto(QNetworkReply *)));
-}
+bool FbSs::savePhoto(QUrl url, const QString &id) {
+	QNetworkReply *reply;
+	if ( !(reply = query(url)) )
+		return false;
 
-void FbSs::savePhoto(QNetworkReply* reply) {
-	QFile file(filename);
+	QFile file(makeFilename(id));
 	file.open(QIODevice::WriteOnly);
     file.write(reply->readAll());
 	file.close();
+
+	return true;
+}
+
+QString FbSs::makeFilename(const QString &id) {
+	return "store/" + id + ".jpg";
 }
 
 bool FbSs::fileExists(const QString &id) {
-    return QFile::exists("store/" + id + ".jpg");
+    return QFile::exists(makeFilename(id));
 }
-
-#if 0
-if ( d_photos.find(key) == d_photos.end() )
-	d_photos.insert(key);
-break;
-#endif

@@ -19,6 +19,7 @@ class NetworkReader : public QObject
 {
     Q_OBJECT
 	QNetworkAccessManager 	*d_manager;
+    enum { timeout = 15 };
 
 private:
     void encodeQueryItems(QUrl& url);
@@ -26,13 +27,12 @@ private:
 public:
 	NetworkReader();
 	~NetworkReader();
-	void makeRequest(const QUrl &url);
+	QNetworkReply *makeRequest(const QUrl &url);
 
 signals:
 	void finishedRequest(QNetworkReply* json);
 
 private slots:
-	virtual void finishedSlot(QNetworkReply* reply);
 	virtual void slotError(QNetworkReply::NetworkError error);
 };
 

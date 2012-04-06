@@ -12,14 +12,13 @@ class FbSs : public QWidget
 {
     Q_OBJECT
 
-    Ui::FbSs ui;
-    QString d_access_token;
-	NetworkReader d_nr;
-	QPushButton 	*d_b;
-    QStateMachine machine;
-    FbObject::FbSet d_photos;
+    Ui::FbSs 		ui;
+    QString 		d_access_token;
+    NetworkReader 	*d_nr;
+    QPushButton 	*d_b;
 
 private:
+    QString makeFilename(const QString &id);
     bool fileExists(const QString &id);
     QJsonObject makeJson(QNetworkReply *reply);
 
@@ -27,19 +26,12 @@ public:
     FbSs(QWidget *parent = 0);
     ~FbSs();
 
-    void query(QUrl &url, const char *slot);
-    void getFriends(const QString &id);
-    void getPhotos(const QString &id);
-    void getPhoto(const QString &id);
-
-
-private slots:
-	void gotFriends(QNetworkReply* reply);
-	void gotPhotos(QNetworkReply* reply);
-	void gotPhoto(QNetworkReply* reply);
-	void savePhoto(QNetworkReply* reply);
-    void handleState();
-
+    void photoThread();
+    QNetworkReply* query(QUrl &url);
+    bool getFriends(const QString &id);
+    bool getPhotos(const QString &id);
+    bool getPhoto(const QString &id);
+    bool savePhoto(QUrl url, const QString &id);
 };
 
 

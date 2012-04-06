@@ -3,7 +3,8 @@ TARGET = FbSs
 QT += core \
     gui \
     network \
-    widgets
+    widgets \
+    concurrent
 HEADERS += src/FbObject.h \
     src/FbSs.h \
     src/network_reader.h
