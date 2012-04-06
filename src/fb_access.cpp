@@ -17,17 +17,22 @@ const QString fburl = "https://graph.facebook.com/";
 const char *access_token = "access_token";
 
 FbAccess::FbAccess(QObject *parent)
-: QThread(parent), d_nr(0) {
+: QThread(parent), d_nr(0), d_abort(false) {
 }
 
 FbAccess::~FbAccess() {
-	delete d_nr;
+    d_mutex.lock();
+    d_abort = true;
+    d_condition.wakeOne();
+    d_mutex.unlock();
+    wait();
 }
 
 void FbAccess::run() {
 	d_nr = new NetworkReader();
 	getAccessToken();
 	getFriends("me");
+	delete d_nr;
 }
 
 void FbAccess::getAccessToken() {
@@ -43,9 +48,11 @@ QJsonObject FbAccess::makeJson(QNetworkReply *reply) {
 }
 
 QNetworkReply* FbAccess::query(QUrl &url) {
+	if ( d_abort )
+		return 0;
 	url.addQueryItem(access_token, d_access_token);
 	QNetworkReply* reply = d_nr->makeRequest(url);
-	QEventLoop loop;
+	QEventLoop loop; // @@@ Store event loop as member rather than recreate
 	connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
 	loop.exec();
 	return reply;
@@ -59,7 +66,7 @@ bool FbAccess::getFriends(const QString &id) {
 	if ( !(reply = query(url)) )
 		return false;
 	const QJsonObject json = makeJson(reply);
-	qDebug() << json;
+	delete reply;
 	if ( !json.value("data").isArray() )
 		return false;
 	foreach ( const QJsonValue &value, json.value("data").toArray()) {
@@ -75,7 +82,9 @@ bool FbAccess::getPhotos(const QString &id) {
 	QNetworkReply *reply;
 	if ( !(reply = query(url)) )
 		return false;
-	foreach ( const QJsonValue &value, makeJson(reply).value("data").toArray()) {
+	const QJsonObject json = makeJson(reply);
+	delete reply;
+	foreach ( const QJsonValue &value, json.value("data").toArray()) {
 		const QString &key = value.toObject().value("id").toString();
 		if ( !fileExists(key) )
 			getPhoto(key);
@@ -91,6 +100,7 @@ bool FbAccess::getPhoto(const QString &id) {
 	if ( !(reply = query(url)) )
 		return false;
 	QJsonObject json(makeJson(reply));
+	delete reply;
 	return savePhoto(json.value("picture").toString(), json.value("id").toString());
 }
 
@@ -98,12 +108,12 @@ bool FbAccess::savePhoto(QUrl url, const QString &id) {
 	QNetworkReply *reply;
 	if ( !(reply = query(url)) )
 		return false;
-
+	qDebug() << id;
 	QFile file(makeFilename(id));
 	file.open(QIODevice::WriteOnly);
     file.write(reply->readAll());
-	file.close();
-
+    delete reply;
+    file.close();
 	return true;
 }
 

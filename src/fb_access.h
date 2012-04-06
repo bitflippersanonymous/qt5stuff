@@ -32,6 +32,9 @@ public:
 
     QString 		d_access_token;
     NetworkReader 	*d_nr;
+    QMutex			d_mutex;
+    bool			d_abort;
+    QWaitCondition	d_condition;
 
 private:
     QString makeFilename(const QString &id);
