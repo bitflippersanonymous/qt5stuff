@@ -12,14 +12,12 @@
 #include <QUrl>
 #include <QNetworkRequest>
 #include <QNetworkReply>
-#include <QJsonObject>
-#include <QNetworkProxy>
 
 class NetworkReader : public QObject
 {
     Q_OBJECT
 	QNetworkAccessManager 	*d_manager;
-    enum { timeout = 15 };
+    enum { timeout = 1000 }; // in ms
 
 private:
     void encodeQueryItems(QUrl& url);

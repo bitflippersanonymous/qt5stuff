@@ -31,6 +31,10 @@
 					<value>make</value>
 				</dictionary>
 				<dictionary>
+					<key>org.eclipse.cdt.make.core.build.location</key>
+					<value></value>
+				</dictionary>
+				<dictionary>
 					<key>org.eclipse.cdt.make.core.build.target.auto</key>
 					<value>debug</value>
 				</dictionary>
@@ -60,15 +64,15 @@
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.environment</key>
-					<value>QMAKESPEC=linux-g++|PATH=/usr/local/Software/qt5/qtbase/bin:${env_var:PATH}:/home/george/Software/qt5/qtbase/bin:${env_var:PATH}|</value>
+					<value>QMAKESPEC=linux-g++|PATH=/usr/local/Software/qt5/qtbase/bin:${env_var:PATH}:${env_var:PATH}:/home/george/Software/qt5/qtbase/bin|</value>
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.stopOnError</key>
-					<value>false</value>
+					<value>true</value>
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.useDefaultBuildCmd</key>
-					<value>false</value>
+					<value>true</value>
 				</dictionary>
 			</arguments>
 		</buildCommand>

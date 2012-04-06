@@ -18,10 +18,12 @@
 	</storageModule>
 	<storageModule moduleId="refreshScope"/>
 	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
+	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets">
 		<buildTargets>
 			<target name="Qt Release Build" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
 				<buildCommand>make</buildCommand>
+				<buildArguments/>
 				<buildTarget>release</buildTarget>
 				<stopOnError>false</stopOnError>
 				<useDefaultCommand>false</useDefaultCommand>
@@ -29,6 +31,7 @@
 			</target>
 			<target name="Qt Debug Build" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
 				<buildCommand>make</buildCommand>
+				<buildArguments/>
 				<buildTarget>debug</buildTarget>
 				<stopOnError>false</stopOnError>
 				<useDefaultCommand>false</useDefaultCommand>
@@ -37,6 +40,8 @@
 		</buildTargets>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.pathentry">
+		<pathentry kind="src" path=""/>
+		<pathentry kind="out" path=""/>
 		<pathentry base-path="/usr/local/Software/qt5/qtbase/include" include="" kind="inc" path="" system="true"/>
 		<pathentry base-path="/usr/local/Software/qt5/qtbase/include" include="QtSql" kind="inc" path="" system="true"/>
 		<pathentry base-path="/usr/local/Software/qt5/qtbase/include" include="QtCore" kind="inc" path="" system="true"/>
@@ -64,5 +69,4 @@
 		<pathentry base-path="/home/george/Software/qt5/qtbase/include" include="QtTest" kind="inc" path="" system="true"/>
 		<pathentry base-path="/home/george/Software/qt5/qtbase/include" include="QtXml" kind="inc" path="" system="true"/>
 	</storageModule>
-	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 </cproject>
