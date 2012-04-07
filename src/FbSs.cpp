@@ -9,13 +9,13 @@
 
 #include "FbSs.h"
 #include <QDebug>
-#include <QtCore>
 
 FbSs::FbSs(QWidget *parent)
     : QWidget(parent), d_b(new QPushButton(this))
 {
-	resize(200, 200);
 	d_fb_access.start();
+	resize(200, 200);
+
 }
 
 FbSs::~FbSs()

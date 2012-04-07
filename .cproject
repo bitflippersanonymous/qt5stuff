@@ -40,21 +40,6 @@
 		</buildTargets>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.pathentry">
-		<pathentry kind="src" path=""/>
-		<pathentry kind="out" path=""/>
-		<pathentry base-path="/usr/local/Software/qt5/qtbase/include" include="" kind="inc" path="" system="true"/>
-		<pathentry base-path="/usr/local/Software/qt5/qtbase/include" include="QtSql" kind="inc" path="" system="true"/>
-		<pathentry base-path="/usr/local/Software/qt5/qtbase/include" include="QtCore" kind="inc" path="" system="true"/>
-		<pathentry base-path="/usr/local/Software/qt5/qtbase/include" include="QtConcurrent" kind="inc" path="" system="true"/>
-		<pathentry base-path="/usr/local/Software/qt5/qtbase/include" include="QtPlatformSupport" kind="inc" path="" system="true"/>
-		<pathentry base-path="/usr/local/Software/qt5/qtbase/include" include="QtGui" kind="inc" path="" system="true"/>
-		<pathentry base-path="/usr/local/Software/qt5/qtbase/include" include="QtPrintSupport" kind="inc" path="" system="true"/>
-		<pathentry base-path="/usr/local/Software/qt5/qtbase/include" include="QtTest" kind="inc" path="" system="true"/>
-		<pathentry base-path="/usr/local/Software/qt5/qtbase/include" include="QtNetwork" kind="inc" path="" system="true"/>
-		<pathentry base-path="/usr/local/Software/qt5/qtbase/include" include="QtDBus" kind="inc" path="" system="true"/>
-		<pathentry base-path="/usr/local/Software/qt5/qtbase/include" include="QtXml" kind="inc" path="" system="true"/>
-		<pathentry base-path="/usr/local/Software/qt5/qtbase/include" include="QtWidgets" kind="inc" path="" system="true"/>
-		<pathentry base-path="/usr/local/Software/qt5/qtbase/include" include="QtOpenGL" kind="inc" path="" system="true"/>
 		<pathentry base-path="/home/george/Software/qt5/qtbase/include" include="" kind="inc" path="" system="true"/>
 		<pathentry base-path="/home/george/Software/qt5/qtbase/include" include="QtDBus" kind="inc" path="" system="true"/>
 		<pathentry base-path="/home/george/Software/qt5/qtbase/include" include="QtGui" kind="inc" path="" system="true"/>
@@ -68,5 +53,21 @@
 		<pathentry base-path="/home/george/Software/qt5/qtbase/include" include="QtNetwork" kind="inc" path="" system="true"/>
 		<pathentry base-path="/home/george/Software/qt5/qtbase/include" include="QtTest" kind="inc" path="" system="true"/>
 		<pathentry base-path="/home/george/Software/qt5/qtbase/include" include="QtXml" kind="inc" path="" system="true"/>
+		<pathentry base-path="/usr/local/Software/qt5/qtbase/include" include="" kind="inc" path="" system="true"/>
+		<pathentry base-path="/usr/local/Software/qt5/qtbase/include" include="QtSql" kind="inc" path="" system="true"/>
+		<pathentry base-path="/usr/local/Software/qt5/qtbase/include" include="QtCore" kind="inc" path="" system="true"/>
+		<pathentry base-path="/usr/local/Software/qt5/qtbase/include" include="QtConcurrent" kind="inc" path="" system="true"/>
+		<pathentry base-path="/usr/local/Software/qt5/qtbase/include" include="QtPlatformSupport" kind="inc" path="" system="true"/>
+		<pathentry base-path="/usr/local/Software/qt5/qtbase/include" include="QtGui" kind="inc" path="" system="true"/>
+		<pathentry base-path="/usr/local/Software/qt5/qtbase/include" include="QtPrintSupport" kind="inc" path="" system="true"/>
+		<pathentry base-path="/usr/local/Software/qt5/qtbase/include" include="QtTest" kind="inc" path="" system="true"/>
+		<pathentry base-path="/usr/local/Software/qt5/qtbase/include" include="QtNetwork" kind="inc" path="" system="true"/>
+		<pathentry base-path="/usr/local/Software/qt5/qtbase/include" include="QtDBus" kind="inc" path="" system="true"/>
+		<pathentry base-path="/usr/local/Software/qt5/qtbase/include" include="QtXml" kind="inc" path="" system="true"/>
+		<pathentry base-path="/usr/local/Software/qt5/qtbase/include" include="QtWidgets" kind="inc" path="" system="true"/>
+		<pathentry base-path="/usr/local/Software/qt5/qtbase/include" include="QtOpenGL" kind="inc" path="" system="true"/>
+		<pathentry include="/home/george/Software/qt5/qtdeclarative/include/QtQuick" kind="inc" path="" system="true"/>
+		<pathentry kind="src" path=""/>
+		<pathentry kind="out" path=""/>
 	</storageModule>
 </cproject>

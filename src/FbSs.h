@@ -3,7 +3,6 @@
 
 #include "ui_FbSs.h"
 #include "fb_access.h"
-#include <QtWidgets>
 #include <QPushButton>
 
 class FbSs : public QWidget
