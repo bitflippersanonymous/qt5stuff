@@ -9,38 +9,24 @@
 
 #include "FbSs.h"
 #include <QDebug>
-#include <QPushButton>
 #include <QKeyEvent>
-
+#include <QGraphicsItem>
+#include <QPixmap>
 
 FbSs::FbSs(QWidget *parent)
-    : QWidget(parent)
+    : QWidget(parent), d_view(&d_scene, this)
 {
-    //ui.label_status->setText("Loading...");
 	d_fb_access.start();
-    ui.setupUi(this);
-    setImage();
+
+	const QString path("store/536239_10150706845599936_577604935_9145859_1652936957_n.jpg");
+    showImage(path);
+	ui.setupUi(this);
 }
 
-FbSs::~FbSs()
-{
+void FbSs::showImage(const QString &path) {
+	d_scene.clear();
+	d_scene.addPixmap(QPixmap(path, 0));
 }
-
-void FbSs::setImage() {
-
-	delete ui.label_image->pixmap();
-	const QPixmap *image = new QPixmap("res/robot.png");
-	ui.label_image->setPixmap(*image);
-}
-
-void FbSs::mouseDoubleClickEvent ( QMouseEvent * event )
-{
-	(void)event;
-	if ( isFullScreen() )
-		showNormal();
-	else
-		showFullScreen();
-};
 
  void FbSs::keyPressEvent(QKeyEvent *event)
  {
@@ -57,3 +43,8 @@ void FbSs::mouseDoubleClickEvent ( QMouseEvent * event )
     	 break;
      }
  }
+
+ void FbSs::resizeEvent(QResizeEvent *event) {
+	 d_view.resize(event->size());
+ }
+

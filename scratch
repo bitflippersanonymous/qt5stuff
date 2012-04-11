@@ -16,4 +16,6 @@ foreach photo photos {
 }
  
  
+#include <QGLWidget>
+view.setViewport(new QGLWidget);
  

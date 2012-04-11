@@ -11,41 +11,9 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+  <string>FbSs</string>
   </property>
-  <widget class="QWidget" name="verticalLayoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>321</width>
-     <height>241</height>
-    </rect>
-   </property>
-   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0">
-    <item>
-     <widget class="QLabel" name="label_image">
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QLabel" name="label_status">
-      <property name="maximumSize">
-       <size>
-        <width>16777215</width>
-        <height>20</height>
-       </size>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-    </item>
-   </layout>
   </widget>
- </widget>
  <resources/>
  <connections/>
 </ui>
