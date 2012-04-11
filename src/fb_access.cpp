@@ -54,6 +54,7 @@ QNetworkReply* FbAccess::query(QUrl &url) {
 	QNetworkReply* reply = d_nr->makeRequest(url);
 	QEventLoop loop; // @@@ Store event loop as member rather than recreate
 	connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+	connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), &loop, SLOT(quit()));
 	loop.exec();
 	return reply;
 }
