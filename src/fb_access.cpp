@@ -17,10 +17,10 @@ const QString fburl = "https://graph.facebook.com/";
 const char *access_token = "access_token";
 
 FbAccess::FbAccess(QObject *parent)
-: QObject(parent), d_state(Sinit) {
+: QObject(parent), d_state(Sinit), d_timer(this), d_i(0) {
 
 	connect(&d_timer, SIGNAL(timeout()), this, SLOT(stateHandler()));
-    d_timer.start(5000);
+	d_timer.start(1000);
     stateHandler();
 }
 
@@ -28,13 +28,12 @@ FbAccess::~FbAccess() {
 }
 
 void FbAccess::stateHandler() {
-
-	if ( d_nr.getPending() > 2 )
+	if ( d_nr.getPending() > 10 )
 		return;
 
 	switch ( d_state ) {
 	case Sinit:
-		getAccessToken();
+	    getAccessToken();
 		d_state = SgetFriends;
 		break;
 	case SgetFriends:
@@ -42,11 +41,13 @@ void FbAccess::stateHandler() {
 		d_state = Swait;
 		break;
 	case SgetPhotos:
-		getPhotos(d_friends.takeLast());
+		getPhotos(d_friends.front());
+		d_friends.pop_front();
 		d_state = Swait;
 		break;
 	case SgetPhoto:
-		getPhoto(d_photos.takeLast());
+		getPhoto(d_photos.front());
+		d_photos.pop_front();
 		d_state = Swait;
 		break;
 	case Swait:
@@ -70,33 +71,37 @@ void FbAccess::getAccessToken() {
 }
 
 QJsonObject FbAccess::makeJson(QNetworkReply *reply) {
-	if ( reply->error() )
-		qDebug() << reply->errorString();
+	if ( reply->error() || !reply->isFinished() )
+		qDebug() << "Error: " << reply->errorString();
 
-	QJsonObject res(QJsonDocument::fromJson(reply->readAll()).object());
-	qDebug() << res;
+	QByteArray bytes(reply->readAll());
+	QJsonObject res(QJsonDocument::fromJson(bytes).object());
+	qDebug() << "Json: " << res;
 	return res;
 }
 
 void FbAccess::query(QUrl &url, const char *slot) {
 	url.addQueryItem(access_token, d_access_token);
+	qDebug() << url.path();
 	QNetworkReply* reply = d_nr.makeRequest(url);
 	if ( reply->error() ) {
 		qDebug() << reply->errorString();
 		reply->deleteLater();
 		return;
 	}
-    connect(&d_nr, SIGNAL(finishedRequest(QNetworkReply *)), this, slot);
+    connect(reply, SIGNAL(finished()), this, slot);
+    connect(reply, SIGNAL(finished()), this, SLOT(stateHandler()));
 }
 
 void FbAccess::getFriends(const QString &id) {
 	QUrl url;
 	url.setUrl(fburl + id + "/friends", QUrl::StrictMode);
 	url.addQueryItem("fields", "id");
-	query(url, SLOT(handleFriends(QNetworkReply *)));
+	query(url, SLOT(handleFriends()));
 }
 
-void FbAccess::handleFriends(QNetworkReply *reply) {
+void FbAccess::handleFriends() {
+	QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
 	const QJsonObject json = makeJson(reply);
 	reply->deleteLater();
 	if ( !json.value("data").isArray() ) // Handle Error
@@ -111,13 +116,13 @@ void FbAccess::getPhotos(const QString &id) {
 	QUrl url;
 	url.setUrl(fburl + id + "/photos", QUrl::StrictMode);
 	url.addQueryItem("fields", "id");
-	query(url, SLOT(handlePhotos(QNetworkReply *)));
+	query(url, SLOT(handlePhotos()));
 }
 
-void FbAccess::handlePhotos(QNetworkReply *reply) {
+void FbAccess::handlePhotos() {
+	QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
 	const QJsonObject json = makeJson(reply);
 	reply->deleteLater();
-
 	foreach ( const QJsonValue &value, json.value("data").toArray()) {
 		const QString &key = value.toObject().value("id").toString();
 		if ( !fileExists(key) )
@@ -129,10 +134,11 @@ void FbAccess::getPhoto(const QString &id) {
 	QUrl url;
 	url.setUrl(fburl + id, QUrl::StrictMode);
 	url.addQueryItem("fields", "id,picture");
-	query(url, SLOT(handlePhoto(QNetworkReply *)));
+	query(url, SLOT(handlePhoto()));
 }
 
-void FbAccess::handlePhoto(QNetworkReply *reply) {
+void FbAccess::handlePhoto() {
+	QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
 	QJsonObject json(makeJson(reply));
 	reply->deleteLater();
 	return savePhoto(json.value("picture").toString(), json.value("id").toString());
@@ -140,17 +146,16 @@ void FbAccess::handlePhoto(QNetworkReply *reply) {
 
 void FbAccess::savePhoto(QUrl url, const QString &id) {
 	qDebug() << url.path();
-	return;
+	query(url, SLOT(handleSavePhoto));
+}
 
-/*
-	query(url);
+void FbAccess::handleSavePhoto() {
+	QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
 	QFile file(makeFilename(id));
 	file.open(QIODevice::WriteOnly);
     file.write(reply->readAll());
-    delete reply;
+	reply->deleteLater();
     file.close();
-	return true;
-	*/
 }
 
 QString FbAccess::makeFilename(const QString &id) {

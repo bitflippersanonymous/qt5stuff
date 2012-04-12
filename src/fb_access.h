@@ -34,12 +34,14 @@ class QJsonObject;
 	 QList<QString>	d_photos;
 	 State			d_state;
 	 QTimer 		d_timer;
+	 int			d_i;
 
-private slots:
+public slots:
     void stateHandler();
-    void handleFriends(QNetworkReply *reply);
-    void handlePhotos(QNetworkReply *reply);
-    void handlePhoto(QNetworkReply *reply);
+    void handleFriends();
+    void handlePhotos();
+    void handlePhoto();
+    void handleSavePhoto();
 
 private:
     QString makeFilename(const QString &id);

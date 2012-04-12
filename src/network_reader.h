@@ -29,11 +29,8 @@ public:
 	QNetworkReply *makeRequest(const QUrl &url);
     int getPending() { return d_pending; }
 
-signals:
-	void finishedRequest(QNetworkReply* reply);
-
 private slots:
-	virtual void finished(QNetworkReply* reply);
+	virtual void finished();
 	virtual void slotError(QNetworkReply::NetworkError error);
 };
 
