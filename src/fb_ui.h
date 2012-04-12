@@ -19,7 +19,7 @@ class FbUi : public QWidget {
     FbGraphicsView 	d_view;
 
 signals:
-    void nextImage();
+    void nextImage(int direction);
 
 protected:
     void resizeEvent(QResizeEvent *event);

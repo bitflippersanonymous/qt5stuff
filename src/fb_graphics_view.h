@@ -14,9 +14,11 @@
 class FbGraphicsView : public QGraphicsView {
 
 public:
-    FbGraphicsView(QWidget *parent = 0) : QGraphicsView(parent) {}
+    FbGraphicsView(QWidget *parent = 0) : QGraphicsView(parent) {
+    }
 	FbGraphicsView(QGraphicsScene *scene, QWidget *parent = 0)
-    	: QGraphicsView(scene, parent) {}
+    	: QGraphicsView(scene, parent) {
+	}
 
 protected:
     void resizeEvent(QResizeEvent *event);

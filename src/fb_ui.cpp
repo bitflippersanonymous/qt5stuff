@@ -14,6 +14,7 @@ FbUi::FbUi()
 	: d_view(&d_scene, this)
 {
     setFocusPolicy(Qt::StrongFocus);
+    resize(640,480);
 }
 
 FbUi::~FbUi() {
@@ -21,20 +22,23 @@ FbUi::~FbUi() {
 
 void FbUi::showImage(const QString &path) {
 	d_scene.clear();
-	d_scene.addPixmap(QPixmap(path, 0));
+	const QGraphicsItem *item = d_scene.addPixmap(QPixmap(path, 0));
+	d_scene.setSceneRect(item->boundingRect());
+	d_view.fitInView(item, Qt::KeepAspectRatio);
 }
 
 void FbUi::resizeEvent(QResizeEvent *event) {
-	 d_view.resize(event->size());
+	d_view.resize(event->size());
 }
 
 void FbUi::keyPressEvent(QKeyEvent *event)
 {
     switch (event->key()) {
     case Qt::Key_Left:
+    	emit nextImage(-1);
         break;
     case Qt::Key_Right:
-    	emit nextImage();
+    	emit nextImage(+1);
         break;
     case Qt::Key_Escape:
 //    	 hide();

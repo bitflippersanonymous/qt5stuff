@@ -7,6 +7,7 @@
 
 #include "fb_graphics_view.h"
 
+
 void FbGraphicsView::resizeEvent(QResizeEvent *event) {
 	(void)event;
 	if ( items().size() )
