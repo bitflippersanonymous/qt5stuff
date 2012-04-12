@@ -5,7 +5,7 @@
 #include "fb_access.h"
 #include "fb_graphics_view.h"
 
-class FbSs : public QObject
+class FbSs : public QWidget
 {
     Q_OBJECT
 
@@ -21,7 +21,7 @@ protected:
     void resizeEvent(QResizeEvent *event);
 
 public:
-    FbSs();
+    FbSs(QWidget *parent = 0);
 
 };
 

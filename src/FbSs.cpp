@@ -13,12 +13,13 @@
 #include <QGraphicsItem>
 #include <QPixmap>
 
-FbSs::FbSs()
-	: d_view(&d_scene)
+FbSs::FbSs(QWidget *parent)
+	: QWidget(parent), d_view(&d_scene)
 {
 	const QString path("store/536239_10150706845599936_577604935_9145859_1652936957_n.jpg");
     showImage(path);
     d_view.show();
+
 }
 
 void FbSs::showImage(const QString &path) {
@@ -30,7 +31,7 @@ void FbSs::showImage(const QString &path) {
  {
      switch (event->key()) {
      case Qt::Key_Left:
-         break;
+    	 break;
      case Qt::Key_Right:
          break;
      case Qt::Key_Escape:
