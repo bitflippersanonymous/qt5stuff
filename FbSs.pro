@@ -4,11 +4,13 @@ QT += core \
     gui \
     network \
     widgets # opengl
-HEADERS += src/fb_graphics_view.h \
+HEADERS += src/fb_ui.h \
+    src/fb_graphics_view.h \
     src/fb_access.h \
     src/FbSs.h \
     src/network_reader.h
-SOURCES += src/fb_graphics_view.cpp \
+SOURCES += src/fb_ui.cpp \
+    src/fb_graphics_view.cpp \
     src/fb_access.cpp \
     src/FbSs.cpp \
     src/main.cpp \
