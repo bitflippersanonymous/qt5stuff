@@ -18,39 +18,45 @@
 #include <QWaitCondition>
 #include <QUrl>
 #include <QNetworkReply>
+#include <QTimer>
 
 class QJsonObject;
 
- class FbAccess : public QThread
+ class FbAccess : public QObject
  {
-     Q_OBJECT
+	 Q_OBJECT
 
-public:
-    typedef unsigned long long FbId;
-    typedef QHash<const FbAccess::FbId, FbAccess *> FbHash;
-    typedef QSet<const FbAccess::FbId> FbSet;
+	 enum State { Sinit, SgetFriends, SgetPhotos, SgetPhoto, Swait, Send };
 
-    QString 		d_access_token;
-    NetworkReader 	*d_nr;
-    QMutex			d_mutex;
-    bool			d_abort;
-    QWaitCondition	d_condition;
+	 QString 		d_access_token;
+	 NetworkReader 	d_nr;
+	 QList<QString>	d_friends;
+	 QList<QString>	d_photos;
+	 State			d_state;
+	 QTimer 		d_timer;
+
+private slots:
+    void stateHandler();
+    void handleFriends(QNetworkReply *reply);
+    void handlePhotos(QNetworkReply *reply);
+    void handlePhoto(QNetworkReply *reply);
 
 private:
     QString makeFilename(const QString &id);
     bool fileExists(const QString &id);
     QJsonObject makeJson(QNetworkReply *reply);
     void getAccessToken();
+    void query(QUrl &url, const char *slot);
+    void getFriends(const QString &id);
+    void getPhotos(const QString &id);
+    void getPhoto(const QString &id);
+    void savePhoto(QUrl url, const QString &id);
 
 public:
     FbAccess(QObject *parent = 0);
     virtual ~FbAccess();
-    void run();
-    QNetworkReply* query(QUrl &url);
-    bool getFriends(const QString &id);
-    bool getPhotos(const QString &id);
-    bool getPhoto(const QString &id);
-    bool savePhoto(QUrl url, const QString &id);
+
+
 };
 
 #endif /* FBOBJECT_H_ */

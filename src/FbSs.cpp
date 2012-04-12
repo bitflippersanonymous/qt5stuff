@@ -13,13 +13,12 @@
 #include <QGraphicsItem>
 #include <QPixmap>
 
-FbSs::FbSs(QWidget *parent)
-    : QWidget(parent), d_view(&d_scene, this)
+FbSs::FbSs()
+	: d_view(&d_scene)
 {
-	d_fb_access.start();
 	const QString path("store/536239_10150706845599936_577604935_9145859_1652936957_n.jpg");
     showImage(path);
-	ui.setupUi(this);
+    d_view.show();
 }
 
 void FbSs::showImage(const QString &path) {
@@ -35,11 +34,10 @@ void FbSs::showImage(const QString &path) {
      case Qt::Key_Right:
          break;
      case Qt::Key_Escape:
-    	 hide();
+//    	 hide();
     	 qApp->quit();
     	 break;
      default:
-    	 QWidget::keyPressEvent(event);
     	 break;
      }
  }

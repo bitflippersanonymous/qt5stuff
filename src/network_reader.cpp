@@ -9,11 +9,18 @@
 #include <QDebug>
 
 NetworkReader::NetworkReader()
-	: d_manager(new QNetworkAccessManager(this)) {
+	: d_manager(new QNetworkAccessManager(this)), d_pending(0) {
+	 connect(d_manager, SIGNAL(finished(QNetworkReply*)),
+	         this, SLOT(finished(QNetworkReply*)));
 }
 
 NetworkReader::~NetworkReader() {
 	delete d_manager;
+}
+
+void NetworkReader::finished(QNetworkReply *reply) {
+	d_pending--;
+	emit finishedRequest(reply);
 }
 
 QNetworkReply *NetworkReader::makeRequest(const QUrl &url)
@@ -33,9 +40,11 @@ QNetworkReply *NetworkReader::makeRequest(const QUrl &url)
   	  reply->deleteLater();
   	  return 0;
     }
+    d_pending++;
     return reply;
 }
 
 void NetworkReader::slotError(QNetworkReply::NetworkError error)  {
-	  qDebug() << "Error: " << error;
+	d_pending--;
+	qDebug() << "Error: " << error;
 }
