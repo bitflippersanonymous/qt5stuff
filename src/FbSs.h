@@ -11,7 +11,7 @@ class FbSs : public QObject
     Q_OBJECT
 
     FbUi			d_fb_ui;
-   // FbAccess		d_fb_access;
+    FbAccess		d_fb_access;
     QStringList		d_filenames;
     int				d_current;
     const QString	d_store;

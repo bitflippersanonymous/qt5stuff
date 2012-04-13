@@ -41,7 +41,7 @@ public slots:
     void handleFriends();
     void handlePhotos();
     void handlePhoto();
-    void handleSavePhoto();
+    void handleSavePhoto(const QString &id);
 
 private:
     QString makeFilename(const QString &id);

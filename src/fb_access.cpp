@@ -145,11 +145,11 @@ void FbAccess::handlePhoto() {
 }
 
 void FbAccess::savePhoto(QUrl url, const QString &id) {
-	qDebug() << url.path();
-	query(url, SLOT(handleSavePhoto));
+	(void)id;
+	query(url, SLOT(handleSavePhoto(const QString &)));
 }
 
-void FbAccess::handleSavePhoto() {
+void FbAccess::handleSavePhoto(const QString &id) {
 	QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
 	QFile file(makeFilename(id));
 	file.open(QIODevice::WriteOnly);
@@ -157,6 +157,7 @@ void FbAccess::handleSavePhoto() {
 	reply->deleteLater();
     file.close();
 }
+
 
 QString FbAccess::makeFilename(const QString &id) {
 	return "store/" + id + ".jpg";
