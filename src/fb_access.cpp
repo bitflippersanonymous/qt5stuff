@@ -142,13 +142,13 @@ void FbAccess::handlePhotos() {
 void FbAccess::getPhoto(const QString &id) {
 	QUrl url;
 	url.setUrl(fburl + id, QUrl::StrictMode);
-	url.addQueryItem("fields", "id,picture");
+	url.addQueryItem("fields", "id,source");
 	query(url, SLOT(handlePhoto()));
 }
 
 void FbAccess::handlePhoto() {
 	const QJsonObject json = makeJson();
-	return savePhoto(json.value("picture").toString(), json.value("id").toString());
+	return savePhoto(json.value("source").toString(), json.value("id").toString());
 }
 
 void FbAccess::savePhoto(QUrl url, const QString &id) {
@@ -164,17 +164,18 @@ void FbAccess::handleSavePhoto(QObject *object) {
 	const Response *response = dynamic_cast<const Response *>(object);
 	const QString id = response->id();
 	QNetworkReply *reply = response->reply();
+	reply->deleteLater();
+	delete object;
 	if ( reply->error() ) {
 		qDebug() << reply->errorString();
-		reply->deleteLater();
 		d_state = Serror;
 		return;
 	}
 	QFile file(makeFilename(id));
 	file.open(QIODevice::WriteOnly);
     file.write(reply->readAll());
-	reply->deleteLater();
     file.close();
+
 }
 
 
