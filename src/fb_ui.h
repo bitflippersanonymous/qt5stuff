@@ -1,8 +1,9 @@
 /*
- * FbSsUi.h
+ * FbSs
  *
- *  Created on: Apr 12, 2012
- *      Author: vmplanet
+ *  Created on: Apr 1, 2012
+ *	Copyright 2012 Ryan Henderson
+ *
  */
 
 #ifndef FBSSUI_H_

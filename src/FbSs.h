@@ -1,3 +1,11 @@
+/*
+ * FbSs
+ *
+ *  Created on: Apr 1, 2012
+ *	Copyright 2012 Ryan Henderson
+ *
+ */
+
 #ifndef QT5STUFF_H
 #define QT5STUFF_H
 

@@ -5,6 +5,7 @@ QT += core \
     network \
     widgets # opengl
 HEADERS += src/fb_ui.h \
+    src/fb_ui.h \
     src/fb_graphics_view.h \
     src/fb_access.h \
     src/FbSs.h \

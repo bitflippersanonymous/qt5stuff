@@ -1,9 +1,11 @@
 /*
- * network_reader.h
+ * FbSs
  *
- *  Created on: Apr 3, 2012
- *      Author: vmplanet
+ *  Created on: Apr 1, 2012
+ *	Copyright 2012 Ryan Henderson
+ *
  */
+
 
 #ifndef NETWORK_READER_H_
 #define NETWORK_READER_H_

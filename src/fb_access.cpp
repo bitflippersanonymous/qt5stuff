@@ -1,9 +1,11 @@
 /*
- * FbObject.cpp
+ * FbSs
  *
- *  Created on: Apr 3, 2012
- *      Author: george
+ *  Created on: Apr 1, 2012
+ *	Copyright 2012 Ryan Henderson
+ *
  */
+
 
 #include "fb_access.h"
 #include <QFile>
@@ -12,6 +14,7 @@
 #include <QJsonArray>
 #include <QDebug>
 #include <QEventLoop>
+#include <QSignalMapper>
 
 const QString fburl = "https://graph.facebook.com/";
 const char *access_token = "access_token";
@@ -70,19 +73,22 @@ void FbAccess::getAccessToken() {
 	dataFile.close();
 }
 
-QJsonObject FbAccess::makeJson(QNetworkReply *reply) {
-	if ( reply->error() || !reply->isFinished() )
+QJsonObject FbAccess::makeJson() {
+	QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
+	reply->deleteLater();
+	if ( reply->error() || !reply->isFinished() ) {
 		qDebug() << "Error: " << reply->errorString();
+		d_state = Serror;
+	}
 
-	QByteArray bytes(reply->readAll());
-	QJsonObject res(QJsonDocument::fromJson(bytes).object());
-	qDebug() << "Json: " << res;
-	return res;
+	return QJsonDocument::fromJson(reply->readAll()).object();
+	//qDebug() << "Json: " << res;
+	//return res;
 }
 
 void FbAccess::query(QUrl &url, const char *slot) {
 	url.addQueryItem(access_token, d_access_token);
-	qDebug() << url.path();
+	//qDebug() << url.path();
 	QNetworkReply* reply = d_nr.makeRequest(url);
 	if ( reply->error() ) {
 		qDebug() << reply->errorString();
@@ -101,11 +107,11 @@ void FbAccess::getFriends(const QString &id) {
 }
 
 void FbAccess::handleFriends() {
-	QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
-	const QJsonObject json = makeJson(reply);
-	reply->deleteLater();
-	if ( !json.value("data").isArray() ) // Handle Error
+	const QJsonObject json = makeJson();
+	if ( !json.value("data").isArray() ) {
+		d_state = Serror;
 		return;
+	}
 
 	foreach ( const QJsonValue &value, json.value("data").toArray()) {
 		d_friends.push_back(value.toObject().value("id").toString());
@@ -120,9 +126,12 @@ void FbAccess::getPhotos(const QString &id) {
 }
 
 void FbAccess::handlePhotos() {
-	QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
-	const QJsonObject json = makeJson(reply);
-	reply->deleteLater();
+	const QJsonObject json = makeJson();
+	if ( !json.value("data").isArray() ) {
+		d_state = Serror;
+		return;
+	}
+
 	foreach ( const QJsonValue &value, json.value("data").toArray()) {
 		const QString &key = value.toObject().value("id").toString();
 		if ( !fileExists(key) )
@@ -138,19 +147,29 @@ void FbAccess::getPhoto(const QString &id) {
 }
 
 void FbAccess::handlePhoto() {
-	QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
-	QJsonObject json(makeJson(reply));
-	reply->deleteLater();
+	const QJsonObject json = makeJson();
 	return savePhoto(json.value("picture").toString(), json.value("id").toString());
 }
 
 void FbAccess::savePhoto(QUrl url, const QString &id) {
-	(void)id;
-	query(url, SLOT(handleSavePhoto(const QString &)));
+	QSignalMapper *signalMapper = new QSignalMapper(this);
+	QNetworkReply* reply = d_nr.makeRequest(url);
+	connect(reply, SIGNAL(finished()), signalMapper, SLOT(map()));
+    signalMapper->setMapping(reply, new Response(reply, id));
+    connect(signalMapper, SIGNAL(mapped(QObject *)),
+    	this, SLOT(handleSavePhoto(QObject *)));
 }
 
-void FbAccess::handleSavePhoto(const QString &id) {
-	QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
+void FbAccess::handleSavePhoto(QObject *object) {
+	const Response *response = dynamic_cast<const Response *>(object);
+	const QString id = response->id();
+	QNetworkReply *reply = response->reply();
+	if ( reply->error() ) {
+		qDebug() << reply->errorString();
+		reply->deleteLater();
+		d_state = Serror;
+		return;
+	}
 	QFile file(makeFilename(id));
 	file.open(QIODevice::WriteOnly);
     file.write(reply->readAll());

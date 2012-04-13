@@ -1,9 +1,11 @@
 /*
- * network_reader.cpp
+ * FbSs
  *
- *  Created on: Apr 3, 2012
- *      Author: vmplanet
+ *  Created on: Apr 1, 2012
+ *	Copyright 2012 Ryan Henderson
+ *
  */
+
 
 #include "network_reader.h"
 #include <QDebug>

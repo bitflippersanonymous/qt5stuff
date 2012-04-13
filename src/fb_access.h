@@ -1,9 +1,11 @@
 /*
- * FbObject.h
+ * FbSs
  *
- *  Created on: Apr 3, 2012
- *      Author: george
+ *  Created on: Apr 1, 2012
+ *	Copyright 2012 Ryan Henderson
+ *
  */
+
 
 #ifndef FBOBJECT_H_
 #define FBOBJECT_H_
@@ -22,11 +24,21 @@
 
 class QJsonObject;
 
+class Response : public QObject {
+	Q_OBJECT
+	QNetworkReply	*d_reply;
+	const QString 	d_id;
+public:
+	Response(QNetworkReply *reply, const QString &id) : d_reply(reply), d_id(id) {}
+	QNetworkReply *reply() const { return d_reply; }
+	const QString &id() const { return d_id; }
+};
+
  class FbAccess : public QObject
  {
 	 Q_OBJECT
 
-	 enum State { Sinit, SgetFriends, SgetPhotos, SgetPhoto, Swait, Send };
+	 enum State { Sinit, SgetFriends, SgetPhotos, SgetPhoto, Swait, Serror, Send };
 
 	 QString 		d_access_token;
 	 NetworkReader 	d_nr;
@@ -41,12 +53,12 @@ public slots:
     void handleFriends();
     void handlePhotos();
     void handlePhoto();
-    void handleSavePhoto(const QString &id);
+    void handleSavePhoto(QObject *object);
 
 private:
     QString makeFilename(const QString &id);
     bool fileExists(const QString &id);
-    QJsonObject makeJson(QNetworkReply *reply);
+    QJsonObject makeJson();
     void getAccessToken();
     void query(QUrl &url, const char *slot);
     void getFriends(const QString &id);

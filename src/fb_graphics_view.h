@@ -1,9 +1,11 @@
 /*
- * fb_graphics_view.h
+ * FbSs
  *
- *  Created on: Apr 11, 2012
- *      Author: vmplanet
+ *  Created on: Apr 1, 2012
+ *	Copyright 2012 Ryan Henderson
+ *
  */
+
 
 #ifndef FB_GRAPHICS_VIEW_H_
 #define FB_GRAPHICS_VIEW_H_

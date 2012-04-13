@@ -1,9 +1,11 @@
 /*
- * FbSsUi.cpp
+ * FbSs
  *
- *  Created on: Apr 12, 2012
- *      Author: vmplanet
+ *  Created on: Apr 1, 2012
+ *	Copyright 2012 Ryan Henderson
+ *
  */
+
 
 #include <QDebug>
 #include <QGraphicsItem>
@@ -17,8 +19,7 @@ FbUi::FbUi()
     resize(640,480);
 }
 
-FbUi::~FbUi() {
-}
+FbUi::~FbUi() {}
 
 void FbUi::showImage(const QString &path) {
 	d_scene.clear();
