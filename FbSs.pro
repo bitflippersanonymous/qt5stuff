@@ -3,7 +3,9 @@ TARGET = FbSs
 QT += core \
     gui \
     network \
-    widgets # opengl
+    widgets \
+    webkit 
+
 HEADERS += src/fb_ui.h \
     src/fb_ui.h \
     src/fb_graphics_view.h \

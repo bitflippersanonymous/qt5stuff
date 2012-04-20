@@ -64,7 +64,7 @@
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.environment</key>
-					<value>QMAKESPEC=linux-g++-64|PATH=/home/george/Software/qt5/qtbase/bin:${env_var:PATH}:${env_var:PATH}:/usr/local/Software/qt5/qtbase/bin|</value>
+					<value>QMAKESPEC=linux-g++|PATH=/usr/local/Software/qt5/qtbase/bin:${env_var:PATH}:/home/george/Software/qt5/qtbase/bin:${env_var:PATH}|</value>
 				</dictionary>
 				<dictionary>
 					<key>org.eclipse.cdt.make.core.stopOnError</key>

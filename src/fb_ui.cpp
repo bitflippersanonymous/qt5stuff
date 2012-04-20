@@ -13,13 +13,15 @@
 #include "fb_ui.h"
 
 FbUi::FbUi()
-	: d_view(&d_scene, this)
+	: d_view(&d_scene, this), d_webview(0)
 {
     setFocusPolicy(Qt::StrongFocus);
     resize(640,480);
 }
 
-FbUi::~FbUi() {}
+FbUi::~FbUi() {
+	delete d_webview;
+}
 
 void FbUi::showImage(const QString &path) {
 	d_scene.clear();
@@ -49,3 +51,11 @@ void FbUi::keyPressEvent(QKeyEvent *event)
    	 break;
     }
 }
+
+void FbUi::showLogin() {
+	d_view.hide();
+	d_webview = new QWebView(this);
+	d_webview->load(QString("http://www.google.com"));
+	d_webview->show();
+}
+

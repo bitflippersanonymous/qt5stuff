@@ -1,21 +1,9 @@
-Init
- 
- 
-getFriends
-me/friends
-
-
-getFriendPhotos
-foreach friend friends {
-	getPhotos(friend) 936631/photos?fields=id,source  
-}
-
-getPhoto
-foreach photo photos {
-	getPhoto(photo) $photo.source returns image
-}
- 
- 
 #include <QGLWidget>
 view.setViewport(new QGLWidget);
- 
+
+client_id 356566627723112 
+
+https://www.facebook.com/dialog/oauth?client_id=356566627723112&redirect_uri=https://www.facebook.com/connect/login_success.html&response_type=token 
+
+https://www.facebook.com/connect/login_success.html#
+    access_token=USER_ACCESS_TOKEN
