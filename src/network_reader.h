@@ -28,7 +28,8 @@ private:
 public:
 	NetworkReader();
 	~NetworkReader();
-	QNetworkReply *makeRequest(const QUrl &url);
+	QNetworkReply *getRequest(const QUrl &url);
+	QNetworkReply *postRequest(const QUrl &serviceUrl, const QUrl &postData);
     int getPending() { return d_pending; }
 
 private slots:

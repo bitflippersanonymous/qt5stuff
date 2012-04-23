@@ -73,6 +73,30 @@ void FbAccess::getAccessToken() {
 	dataFile.close();
 }
 
+void FbAccess::startLogin()  {
+	QUrl data, url;
+	data.addQueryItem(access_token, d_access_token);
+	QNetworkReply* reply = d_nr.postRequest(url, data);
+	if ( reply->error() ) {
+		qDebug() << reply->errorString();
+		reply->deleteLater();
+		return;
+	}
+    connect(reply, SIGNAL(finished()), this, SLOT(handleLogin()));
+}
+
+void FbAccess::handleLogin() {
+	QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
+	reply->deleteLater();
+	if ( reply->error() || !reply->isFinished() ) {
+		qDebug() << "Error: " << reply->errorString();
+		d_state = Serror;
+	}
+
+	QByteArray array = reply->readAll();
+	// @@@ Get redirect?
+}
+
 QJsonObject FbAccess::makeJson() {
 	QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
 	reply->deleteLater();
@@ -89,7 +113,7 @@ QJsonObject FbAccess::makeJson() {
 void FbAccess::query(QUrl &url, const char *slot) {
 	url.addQueryItem(access_token, d_access_token);
 	//qDebug() << url.path();
-	QNetworkReply* reply = d_nr.makeRequest(url);
+	QNetworkReply* reply = d_nr.getRequest(url);
 	if ( reply->error() ) {
 		qDebug() << reply->errorString();
 		reply->deleteLater();
@@ -153,7 +177,7 @@ void FbAccess::handlePhoto() {
 
 void FbAccess::savePhoto(QUrl url, const QString &id) {
 	QSignalMapper *signalMapper = new QSignalMapper(this);
-	QNetworkReply* reply = d_nr.makeRequest(url);
+	QNetworkReply* reply = d_nr.getRequest(url);
 	connect(reply, SIGNAL(finished()), signalMapper, SLOT(map()));
     signalMapper->setMapping(reply, new Response(reply, id));
     connect(signalMapper, SIGNAL(mapped(QObject *)),

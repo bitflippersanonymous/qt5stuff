@@ -48,18 +48,20 @@ public:
 	 QTimer 		d_timer;
 	 int			d_i;
 
-public slots:
+private slots:
     void stateHandler();
     void handleFriends();
     void handlePhotos();
     void handlePhoto();
     void handleSavePhoto(QObject *object);
+    void handleLogin();
 
 private:
     QString makeFilename(const QString &id);
     bool fileExists(const QString &id);
     QJsonObject makeJson();
     void getAccessToken();
+    void startLogin();
     void query(QUrl &url, const char *slot);
     void getFriends(const QString &id);
     void getPhotos(const QString &id);

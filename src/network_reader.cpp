@@ -24,8 +24,7 @@ void NetworkReader::finished() {
 	d_pending--;
 }
 
-QNetworkReply *NetworkReader::makeRequest(const QUrl &url)
-{
+QNetworkReply *NetworkReader::getRequest(const QUrl &url) {
 	QNetworkRequest request;
     request.setUrl(url);
     request.setRawHeader("User-Agent", "YouTwitFace 1.0");
@@ -42,6 +41,15 @@ QNetworkReply *NetworkReader::makeRequest(const QUrl &url)
   	  return 0;
     }
 
+    d_pending++;
+    return reply;
+}
+
+QNetworkReply *NetworkReader::postRequest(const QUrl &serviceUrl, const QUrl &postData ) {
+	QNetworkRequest request(serviceUrl);
+    request.setRawHeader("User-Agent", "YouTwitFace 1.0");
+	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+	QNetworkReply *reply = d_manager->post(request, postData.encodedQuery());
     d_pending++;
     return reply;
 }
