@@ -10,6 +10,7 @@
 #define QT5STUFF_H
 
 #include <QFileInfoList>
+#include <QSettings>
 #include "fb_ui.h"
 #include "fb_access.h"
 #include "fb_graphics_view.h"
@@ -22,13 +23,18 @@ class FbSs : public QObject
     FbAccess		d_fb_access;
     QStringList		d_filenames;
     int				d_current;
-    const QString	d_store;
+    static const QString	s_store;
 
 public slots:
 	void nextImage(int direction);
 
+private:
+    void writeSettings() const;
+    void readSettings();
+
 public:
     FbSs();
+    ~FbSs();
     void updateStore();
 };
 
