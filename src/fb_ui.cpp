@@ -16,8 +16,8 @@ FbUi::FbUi()
 	: d_view(&d_scene, this)
 {
     setFocusPolicy(Qt::StrongFocus);
-    resize(640,480);
     d_view.setFocusPolicy(Qt::NoFocus);
+    setWindowTitle("FbSs");
 }
 
 FbUi::~FbUi() {}

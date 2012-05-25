@@ -33,6 +33,7 @@ void FbSs::writeSettings() const {
 	settings.setValue("size", d_fb_ui.size());
 	settings.setValue("pos", d_fb_ui.pos());
 	settings.endGroup();
+	settings.setValue("current", d_current);
 }
 
 void FbSs::readSettings() {
@@ -41,11 +42,12 @@ void FbSs::readSettings() {
     d_fb_ui.resize(settings.value("size", QSize(400, 400)).toSize());
     d_fb_ui.move(settings.value("pos", QPoint(200, 200)).toPoint());
     settings.endGroup();
+    d_current = settings.value("current", 0).toInt();
 }
 
 void FbSs::updateStore() {
 	d_filenames.clear();
-	d_filenames = QDir(s_store).entryList(QDir::Files);
+	d_filenames = QDir(s_store).entryList(QDir::Files|QDir::Readable);
 }
 
 void FbSs::nextImage(int direction) {
