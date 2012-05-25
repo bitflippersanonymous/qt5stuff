@@ -46,7 +46,7 @@ public:
 	 QList<QString>	d_photos;
 	 State			d_state;
 	 QTimer 		d_timer;
-	 int			d_i;
+
 
 private slots:
     void stateHandler();

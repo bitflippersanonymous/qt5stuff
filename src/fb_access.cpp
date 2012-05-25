@@ -17,10 +17,13 @@
 #include <QSignalMapper>
 
 const QString fburl = "https://graph.facebook.com/";
+const char *loginurl = "https://www.facebook.com/dialog/oauth?redirect_uri=https://www.facebook.com/connect/login_success.html&response_type=token";
+const char *posturl = "https://www.facebook.com/login.php?login_attempt=1&fbconnect=1&display=page&next=https%3A%2F%2Fwww.facebook.com%2Fdialog%2Fpermissions.request%3F_path%3Dpermissions.request%26app_id%3D356566627723112%26redirect_uri%3Dhttps%253A%252F%252Fwww.facebook.com%252Fconnect%252Flogin_success.html%26display%3Dpage%26response_type%3Dtoken%26fbconnect%3D1%26from_login%3D1%26client_id%3D356566627723112&legacy_return=1";
 const char *access_token = "access_token";
+const char *client_id = "356566627723112";
 
 FbAccess::FbAccess(QObject *parent)
-: QObject(parent), d_state(Sinit), d_timer(this), d_i(0) {
+: QObject(parent), d_state(Sinit), d_timer(this) {
 
 	connect(&d_timer, SIGNAL(timeout()), this, SLOT(stateHandler()));
 	d_timer.start(1000);
@@ -36,8 +39,8 @@ void FbAccess::stateHandler() {
 
 	switch ( d_state ) {
 	case Sinit:
-	    getAccessToken();
-		d_state = SgetFriends;
+		getAccessToken();
+		d_state = Swait;
 		break;
 	case SgetFriends:
 		getFriends("me");
@@ -74,8 +77,15 @@ void FbAccess::getAccessToken() {
 }
 
 void FbAccess::startLogin()  {
-	QUrl data, url;
-	data.addQueryItem(access_token, d_access_token);
+	QFile dataFile("res/login");
+	dataFile.open(QIODevice::ReadOnly);
+	Q_ASSERT(dataFile.size());
+	QString login = dataFile.readLine().trimmed();
+	dataFile.close();
+
+	QUrl data;
+	QUrl url(posturl);
+	//url.addQueryItem("client_id", client_id);
 	QNetworkReply* reply = d_nr.postRequest(url, data);
 	if ( reply->error() ) {
 		qDebug() << reply->errorString();
@@ -91,9 +101,21 @@ void FbAccess::handleLogin() {
 	if ( reply->error() || !reply->isFinished() ) {
 		qDebug() << "Error: " << reply->errorString();
 		d_state = Serror;
+		return;
 	}
 
+    const QString redirectionTargetUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toString();
+    if ( redirectionTargetUrl.size() ) {
+        qDebug() << "redirectionTargetUrl: " << redirectionTargetUrl;
+    	QNetworkReply* reply = d_nr.postRequest(redirectionTargetUrl, QUrl());
+        QNetworkReply::NetworkError error = reply->error();
+        if (error != QNetworkReply::NoError)
+      	  qDebug() << "Error: " << error;
+        return;
+    }
+
 	QByteArray array = reply->readAll();
+	qDebug() << array;
 	// @@@ Get redirect?
 }
 

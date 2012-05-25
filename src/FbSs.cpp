@@ -17,7 +17,6 @@ FbSs::FbSs() : d_current(0), d_store("store")
 	nextImage(0);
 	d_fb_ui.show();
 	d_fb_ui.setFocus();
-	d_fb_ui.showLogin();
 }
 
 void FbSs::updateStore() {
