@@ -3,16 +3,14 @@ TARGET = FbSs
 QT += core \
     gui \
     network \
-    widgets \
-    webkit
+    widgets
 HEADERS += src/fb_ui.h \
     src/fb_ui.h \
     src/fb_graphics_view.h \
     src/fb_access.h \
     src/FbSs.h \
     src/network_reader.h
-SOURCES += FbSs.s \
-    src/fb_ui.cpp \
+SOURCES += src/fb_ui.cpp \
     src/fb_graphics_view.cpp \
     src/fb_access.cpp \
     src/FbSs.cpp \
